@@ -9,39 +9,48 @@ using namespace std;
 int main() 
 {
     ifstream myFile("input.txt");
+    string myString, subStr;
     int sum = 0;
     if (myFile.is_open()) 
     {
         char myChar, lastChar;
-        int start1 = 0, end1 = 0, start2 = 0, end2 = 0, state = 0;
+        int indexStart1 = 0, indexEnd1 = 0, indexStart2 = 0, indexEnd2 = 0;
+        int start1 = 0, end1 = 0, start2 = 0, end2 = 0;
         while (myFile) 
         {
-            myChar = myFile.get();
-            if (lastChar == '\n')
+            getline(myFile, myString);
+            indexStart1 = myString.find('-');
+            if (indexStart1 != -1) 
             {
-                state = 0;
-                start1 = atoi(&myChar);
+                subStr = myString.substr(0, indexStart1);
+                start1 = stoi(subStr);
             }
-            else if (myChar != '\r' && lastChar == ',')
+            indexEnd1 = myString.find(',');
+            if (indexEnd1 != -1) 
             {
-                state = 1;
-                start2 = atoi(&myChar);
+                subStr = myString.substr(indexStart1+1, indexEnd1);
+                end1 = stoi(subStr);
             }
-            else if (myChar != '\r' && lastChar == '-')
+            indexStart2 = myString.rfind('-');
+            if (indexStart2 != -1) 
             {
-                if(state == 0)
+                subStr = myString.substr(indexEnd1+1, indexStart2);
+                start2 = stoi(subStr);
+            }
+            indexEnd2 = myString.find('\r');
+            if (indexEnd2 != -1) 
+            {
+                subStr = myString.substr(indexStart2+1, indexEnd2);
+                end2 = stoi(subStr);
+                if (start1 >= start2 && end1 <= end2) 
                 {
-                    end1 = atoi(&myChar);
+                    sum++;
                 }
-                else if(state == 1)
+                else if (start2 >= start1 && end2 <= end1)
                 {
-                    end2 = atoi(&myChar);
-                    cout << "Characters are " << start1 << " --- "<< end1 << " || "<< start2 << " --- "<<  end2 << endl;
-                    if (start1 >= start2 && end1 <= end2) sum++;
-                    else if (start2 >= start1 && end1 >= end2) sum++;
+                    sum++;
                 }
             }
-            lastChar = myChar;
         }
     }
     cout << "Sum is: " << sum;
