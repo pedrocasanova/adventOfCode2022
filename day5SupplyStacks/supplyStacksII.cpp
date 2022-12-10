@@ -65,8 +65,13 @@ int main()
                 to = stoi(token);
                 for(int i = 0; i < amount; i++)
                 {
-                    move = supplyStack[from-1].front();
+                    stack.emplace_front(supplyStack[from-1].front()); 
                     supplyStack[from-1].pop_front();
+                }
+                for(int i = 0; i < amount; i++)
+                {
+                    move = stack.front();
+                    stack.pop_front();
                     supplyStack[to-1].emplace_front(move);
                 }
             }
