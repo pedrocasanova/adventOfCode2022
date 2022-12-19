@@ -6,22 +6,28 @@
 
 using namespace std;
 
-void printGrid(int sampleGrid[20][20])
+void printGrid(int sampleGrid[500][500])
 {
-    cout << "NEW GRID IS : " << endl;
-    for(int i = 0; i < 20; i++)
+    int tailCount = 0;
+    //cout << "NEW GRID IS : " << endl;
+    for(int i = 0; i < 500; i++)
     {
-        for(int j = 0; j < 20; j++) cout << sampleGrid[i][j];
-        cout << endl;
+        for(int j = 0; j < 500; j++) 
+        {
+            // cout << sampleGrid[i][j];
+            if(sampleGrid[i][j] == 1) tailCount++;
+        }
+        // cout << endl;
     }
+    cout << "Tail count is " << tailCount << endl;
 }
             
 int main() 
 {
     ifstream myFile("input.txt");
     string myString;
-    int currHeadPositionX = 0, currHeadPositionY = 0, currTailPositionX = 0, currTailPositionY = 0;
-    int grid[20][20] = {0};
+    int currHeadPositionX = 250, currHeadPositionY = 250, currTailPositionX = 250, currTailPositionY = 250;
+    int grid[500][500] = {0};
     if (myFile.is_open()) 
     {
         while(myFile)
@@ -29,38 +35,102 @@ int main()
             getline(myFile, myString);
             if (myString[0] == 'R')
             {
-                for(int j = 0; j < atoi(&myString[2]); j++)
+                for(int i = 0; i < atoi(&myString[2]); i++)
                 {
                     currHeadPositionX++;
-                    grid[currHeadPositionX][currHeadPositionY] = 1;
+                    if(abs(currHeadPositionX - currTailPositionX) > 1)
+                    {
+                        // diagonal move
+                        if((currHeadPositionX != currTailPositionX) && (currHeadPositionY != currTailPositionY))
+                        {
+                            currTailPositionX++;
+                            if (currTailPositionY > currHeadPositionY) currTailPositionY--;
+                            else if (currTailPositionY < currHeadPositionY) currTailPositionY++;
+                        }
+                        else 
+                        {
+                            currTailPositionX++;
+                        }
+                    }
+                    grid[currTailPositionX][currTailPositionY] = 1;
+                    // cout << "Current Head Position is : (" << currHeadPositionX << " , " << currHeadPositionY << ")" << endl;
+                    // cout << "Current Tail Position is : (" << currTailPositionX << " , " << currTailPositionY << ")" << endl;
                 }
             }
             if (myString[0] == 'U')
             {
-                for(int i = 0; i < atoi(&myString[2]); i++)
+                for(int j = 0; j < atoi(&myString[2]); j++)
                 {
                     currHeadPositionY++;
-                    grid[currHeadPositionX][currHeadPositionY] = 2;
+                    if(abs(currHeadPositionY - currTailPositionY) > 1)
+                    {
+                        // diagonal move
+                        if((currHeadPositionX != currTailPositionX) && (currHeadPositionY != currTailPositionY))
+                        {
+                            currTailPositionY++;
+                            if (currTailPositionX < currHeadPositionX) currTailPositionX++;
+                            else if (currTailPositionX > currHeadPositionX) currTailPositionX--;
+                        }
+                        else 
+                        {
+                            currTailPositionY++;
+                        }
+                    }
+                    grid[currTailPositionX][currTailPositionY] = 1;
+                    // cout << "Current Head Position is : (" << currHeadPositionX << " , " << currHeadPositionY << ")" << endl;
+                    // cout << "Current Tail Position is : (" << currTailPositionX << " , " << currTailPositionY << ")" << endl;
                 }
             }
             if (myString[0] == 'D')
             {
-                for(int m = 0; m < atoi(&myString[2]); m++)
+                for(int k = 0; k < atoi(&myString[2]); k++)
                 {
                     currHeadPositionY--;
-                    grid[currHeadPositionX][currHeadPositionY] = 3;
+                    if(abs(currHeadPositionY - currTailPositionY) > 1)
+                    {
+                        // diagonal move
+                        if((currHeadPositionX != currTailPositionX) && (currHeadPositionY != currTailPositionY))
+                        {
+                            currTailPositionY--;
+                            if (currTailPositionX > currHeadPositionX) currTailPositionX--;
+                            else if (currTailPositionX < currHeadPositionX) currTailPositionX++;
+                        }
+                        else 
+                        {
+                            currTailPositionY--;
+                        }
+                    }
+                    grid[currTailPositionX][currTailPositionY] = 1;
+                    // cout << "Current Head Position is : (" << currHeadPositionX << " , " << currHeadPositionY << ")" << endl;
+                    // cout << "Current Tail Position is : (" << currTailPositionX << " , " << currTailPositionY << ")" << endl;
                 }
             }
             if (myString[0] == 'L')
             {
-                for(int n = 0; n < atoi(&myString[2]); n++)
+                for(int l = 0; l < atoi(&myString[2]); l++)
                 {
                     currHeadPositionX--;
-                    grid[currHeadPositionX][currHeadPositionY] = 4;
+                    if(abs(currHeadPositionX - currTailPositionX) > 1)
+                    {
+                        // diagonal move
+                        if((currHeadPositionX != currTailPositionX) && (currHeadPositionY != currTailPositionY))
+                        {
+                            currTailPositionX--;
+                            if (currTailPositionY > currHeadPositionY) currTailPositionY--;
+                            else if (currTailPositionY < currHeadPositionY) currTailPositionY++;
+                        }
+                        else 
+                        {
+                            currTailPositionX--;
+                        }
+                    }
+                    grid[currTailPositionX][currTailPositionY] = 1;
+                    // cout << "Current Head Position is : (" << currHeadPositionX << " , " << currHeadPositionY << ")" << endl;
+                    // cout << "Current Tail Position is : (" << currTailPositionX << " , " << currTailPositionY << ")" << endl;
                 }
             }
         }
-        printGrid(grid);
     }
+    printGrid(grid);
     return 0;
 }
