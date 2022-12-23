@@ -17,7 +17,6 @@ int main()
         while(myFile)
         {
             getline(myFile, myString);
-            cout << myString << endl;
             // noop instruction
             if(myString[0] == 'n') cycleCount++;
             if (cycleCount == 20 || cycleCount == 60 || cycleCount == 100 || cycleCount == 140 || cycleCount == 180 || cycleCount == 220)
